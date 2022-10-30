@@ -1,26 +1,27 @@
-import './App.css';
+import "./App.css";
 import React from "react";
+import NavBar from "./components/NavBar";
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        // State of the App
-        this.state = {
-            currency: "$",
-            cart: []
-        }
-    }
+    // State of the App
+    this.state = {
+      currency: "$",
+      cart: [],
+    };
+  }
 
-    render() {
-        return (
-            // Nav Bar component
-            // Body Component
-            <div className="app">
-                App here
-            </div>
-        )
-    }
+  render() {
+    return (
+      // Nav Bar component
+      // Body Component
+      <>
+        <NavBar />
+      </>
+    );
+  }
 }
 
 export default App;
