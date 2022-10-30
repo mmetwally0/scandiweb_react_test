@@ -13,10 +13,16 @@ class NavBar extends React.Component {
   render() {
     return (
       <nav className="nav-bar">
-        <Categories />
-        <img src={logo} alt="" />
-        <div>
-          <CurrencySwitcher />
+        <Categories
+          handleCategoryChange={this.props.handleCategoryChange}
+          category={this.props.category}
+        />
+        <img src={logo} alt="" className="logo" />
+        <div className="nav-links">
+          <CurrencySwitcher
+            currency={this.props.currency}
+            handleCurrencyChange={this.props.handleCurrencyChange}
+          />
           <MiniCart />
         </div>
       </nav>

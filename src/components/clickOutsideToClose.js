@@ -7,8 +7,8 @@ export class ClickOutsideToClose extends React.Component {
     this.handleClickOutside = this.handleClickOutside.bind(this);
   }
 
-  handleClickOutside(event) {
-    if (this.ref.current && !this.ref.current.contains(event.target)) {
+  handleClickOutside(e) {
+    if (this.ref.current && !this.ref.current.contains(e.target)) {
       this.onClickOutside && this.onClickOutside();
     }
   }

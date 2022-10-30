@@ -14,7 +14,16 @@ class Categories extends React.Component {
           return (
             <ul className="category-links">
               {data.categories.map((category) => (
-                <li key={category.name}>{category.name}</li>
+                <li
+                  key={category.name}
+                  onClick={this.props.handleCategoryChange}
+                  className={
+                    this.props.category === category.name ? "active" : null
+                  }
+                  data-name={category.name}
+                >
+                  {category.name}
+                </li>
               ))}
             </ul>
           );
