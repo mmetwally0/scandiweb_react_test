@@ -4,6 +4,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Raleway", sans-serif;
+  transition: 0.25s ease-in-out;
 }
 
 #root {
@@ -20,6 +21,7 @@ body {
   position: sticky;
   top: 0;
   background: white;
+  z-index: 99;
 }
 
 .category-links {
@@ -53,7 +55,7 @@ body {
   transition: 1s;
   animation: menuanimation 0.5s;
   background-color: white;
-  box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
+  box-shadow: 0 4px 35px rgba(168, 172, 176, 0.19);
 }
 
 .mini-cart-menu {
@@ -131,6 +133,103 @@ body {
   animation-iteration-count: infinite;
 }
 
+.category-page {
+  padding: 80px 100px;
+}
+.category-page h1 {
+  font-weight: 400;
+  font-size: 42px;
+  color: #1D1F22;
+  text-transform: capitalize;
+  margin-bottom: 103px;
+  line-height: 160%;
+}
+
+.category-items-container {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 40px;
+  row-gap: 103px;
+}
+
+.item-in-category {
+  box-sizing: border-box;
+  width: 386px;
+  height: 444px;
+  background: #FFFFFF;
+  padding: 16px;
+  line-height: 160%;
+  color: #1D1F22;
+  position: relative;
+  transition: 0.3s ease-in-out;
+}
+.item-in-category .item-image {
+  width: 354px;
+  height: 330px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(168, 172, 176, 0.19);
+}
+.item-in-category .item-image img {
+  height: 100%;
+}
+.item-in-category .item-name {
+  font-weight: 300;
+  font-size: 18px;
+  margin-top: 24px;
+}
+.item-in-category .item-price {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 160%;
+}
+.item-in-category .add-to-cart-icon {
+  position: absolute;
+  right: 31px;
+  bottom: 72px;
+  display: none;
+  transition: 0.2s ease-in-out;
+  border-radius: 50%;
+}
+.item-in-category .add-to-cart-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 1px 20px #5ece7b;
+}
+
+.item-in-category:hover {
+  box-shadow: 0 4px 35px rgba(168, 172, 176, 0.19);
+  cursor: pointer;
+  transform: scale(1.01);
+}
+.item-in-category:hover .add-to-cart-icon {
+  display: block;
+  animation: beat 1s ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.item-in-category.out-of-stock {
+  pointer-events: none;
+}
+
+.item-in-category.out-of-stock::after {
+  content: "OUT OF STOCK";
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 160%;
+  color: #8D8F9A;
+}
+
 @keyframes menuanimation {
   0% {
     opacity: 0;
@@ -170,6 +269,14 @@ body {
   }
   100% {
     transform: scale(1, 1) translateY(0);
+  }
+}
+@keyframes beat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
   }
 }
 

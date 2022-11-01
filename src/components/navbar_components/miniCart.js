@@ -35,6 +35,7 @@ class MiniCart extends ClickOutsideToClose {
         break;
       case false:
         document.body.style.backgroundColor = "rgba(57, 55, 72, 0.22)";
+        // document.body.style.zIndex = "99";
         document.body.style.pointerEvents = "none";
         this.ref.current.style.pointerEvents = "auto";
         break;

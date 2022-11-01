@@ -1,6 +1,7 @@
 import "./App.css";
 import React from "react";
 import NavBar from "./components/NavBar";
+import Body from "./components/body";
 
 class App extends React.Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class App extends React.Component {
       currency: "$",
       category: "all",
       cart: [],
+      bodyPage: "category",
     };
 
     this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
@@ -35,6 +37,11 @@ class App extends React.Component {
           category={this.state.category}
           handleCurrencyChange={this.handleCurrencyChange}
           handleCategoryChange={this.handleCategoryChange}
+        />
+        <Body
+          category={this.state.category}
+          bodyPage={this.state.bodyPage}
+          currency={this.state.currency}
         />
       </>
     );
