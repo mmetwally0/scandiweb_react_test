@@ -21,6 +21,7 @@ class Categories extends React.Component {
                     this.props.category === category.name ? "active" : null
                   }
                   data-name={category.name}
+                  data-test={JSON.stringify({ name: "mohamed" })}
                 >
                   {category.name}
                 </li>

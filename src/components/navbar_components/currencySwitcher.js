@@ -57,8 +57,10 @@ class CurrencySwitcher extends ClickOutsideToClose {
                             ? "active"
                             : null
                         }
-                        data-currency={currency.symbol}
-                        onClick={this.props.handleCurrencyChange}
+                        onClick={() => {
+                          this.props.handleCurrencyChange(currency.symbol);
+                          this.handleCartControls();
+                        }}
                       >
                         {`${currency.symbol}  ${currency.label}`}
                       </li>

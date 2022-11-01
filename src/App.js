@@ -1,7 +1,7 @@
 import "./App.css";
-import React from "react";
 import NavBar from "./components/NavBar";
 import Body from "./components/body";
+import React from "react";
 
 class App extends React.Component {
   constructor(props) {
@@ -19,8 +19,8 @@ class App extends React.Component {
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
   }
 
-  handleCurrencyChange(e) {
-    this.setState({ currency: e.target.dataset.currency });
+  handleCurrencyChange(currency) {
+    this.setState({ currency: currency });
   }
 
   handleCategoryChange(e) {
@@ -43,6 +43,7 @@ class App extends React.Component {
           bodyPage={this.state.bodyPage}
           currency={this.state.currency}
         />
+        <div id="overlay"></div>
       </>
     );
   }

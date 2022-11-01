@@ -1,5 +1,4 @@
 import React from "react";
-import cartIcon from "../../images/empty-cart.svg";
 import ClickOutsideToClose from "../clickOutsideToClose";
 import cart from "../../images/empty-cart.svg";
 
@@ -18,7 +17,7 @@ class MiniCart extends ClickOutsideToClose {
 
   onClickOutside() {
     this.setState({ show: false });
-    document.body.style.backgroundColor = "white";
+    document.querySelector("#overlay").style.display = "none";
     document.body.style.pointerEvents = "auto";
   }
 
@@ -29,15 +28,13 @@ class MiniCart extends ClickOutsideToClose {
 
   handleBlackScreen() {
     switch (this.state.show) {
-      case true:
-        document.body.style.backgroundColor = "white";
-        document.body.style.pointerEvents = "auto";
-        break;
       case false:
-        document.body.style.backgroundColor = "rgba(57, 55, 72, 0.22)";
-        // document.body.style.zIndex = "99";
+        document.querySelector("#overlay").style.display = "block";
         document.body.style.pointerEvents = "none";
-        this.ref.current.style.pointerEvents = "auto";
+        break;
+      default:
+        document.querySelector("#overlay").style.display = "none";
+        document.body.style.pointerEvents = "auto";
         break;
     }
   }
@@ -56,10 +53,6 @@ class MiniCart extends ClickOutsideToClose {
 }
 
 class MiniCartMenu extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     if (!this.props.show) {
       return null;
