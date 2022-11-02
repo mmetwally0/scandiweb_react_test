@@ -17,7 +17,12 @@ class NavBar extends React.Component {
           handleCategoryChange={this.props.handleCategoryChange}
           category={this.props.category}
         />
-        <img src={logo} alt="" className="logo" />
+        <img
+          src={logo}
+          alt=""
+          className="logo"
+          onClick={this.props.handleSavePreference}
+        />
         <div className="nav-links">
           <CurrencySwitcher
             currency={this.props.currency}

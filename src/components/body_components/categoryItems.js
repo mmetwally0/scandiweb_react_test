@@ -7,7 +7,7 @@ import { getPriceByCurrency } from "../../functions";
 class CategoryItems extends React.Component {
   render() {
     return (
-      <div className="category-page">
+      <div className="category-page" ref={this.ref}>
         <h1>{this.props.category}</h1>
         <div className="category-items-container">
           <Query
