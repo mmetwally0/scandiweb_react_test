@@ -1,13 +1,17 @@
 import React from "react";
-import { ALL_ITEMS_IN_CATEGORY } from "../queries";
+import { ALL_ITEMS_IN_CATEGORY, PRODUCT_BY_ID } from "../queries";
 import { Query } from "@apollo/client/react/components";
 import addToCart from "../../images/addToCart.svg";
-import { getPriceByCurrency } from "../../functions";
+import {
+  getPriceByCurrency,
+  createCartItem,
+  addDefaultAttributes,
+} from "../../functions";
 
 class CategoryItems extends React.Component {
   render() {
     return (
-      <div className="category-page" ref={this.ref}>
+      <div className="category-page body" ref={this.ref}>
         <h1>{this.props.category}</h1>
         <div className="category-items-container">
           <Query
@@ -24,6 +28,7 @@ class CategoryItems extends React.Component {
                   product={product}
                   key={product.id}
                   currency={this.props.currency}
+                  handleAddToCart={this.props.handleAddToCart}
                 />
               ));
             }}
@@ -44,12 +49,47 @@ class CategoryPageItem extends React.Component {
         <div className="item-image">
           <img src={product.gallery[0]} alt="" />
         </div>
-        <img className="add-to-cart-icon" src={addToCart} alt="" />
+        <AddToCartIcon
+          itemId={product.id}
+          handleAddToCart={this.props.handleAddToCart}
+        />
         <div className="item-name">{product.name}</div>
         <div className="item-price">
           {getPriceByCurrency(product.prices, currency)}
         </div>
       </div>
+    );
+  }
+}
+
+class AddToCartIcon extends React.Component {
+  render() {
+    return (
+      <Query
+        query={PRODUCT_BY_ID}
+        variables={{
+          productId: this.props.itemId,
+        }}
+      >
+        {({ loading, data }) => {
+          // Wait until data is fetched before rendering anything
+          if (loading) return null;
+
+          return (
+            <img
+              className="add-to-cart-icon"
+              src={addToCart}
+              alt=""
+              onClick={() => {
+                const product = data.product;
+                const attributes = addDefaultAttributes(product);
+                const newItem = createCartItem(product, 1, attributes);
+                this.props.handleAddToCart(newItem);
+              }}
+            />
+          );
+        }}
+      </Query>
     );
   }
 }

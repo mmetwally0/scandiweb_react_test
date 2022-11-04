@@ -1,6 +1,8 @@
 import React from "react";
 import ClickOutsideToClose from "../clickOutsideToClose";
 import cart from "../../images/empty-cart.svg";
+import MiniCartItem from "../body_components/miniCartItem";
+import uuid from "react-uuid";
 
 class MiniCart extends ClickOutsideToClose {
   constructor(props) {
@@ -14,11 +16,10 @@ class MiniCart extends ClickOutsideToClose {
   }
 
   // If clicked outside the mini cart, close it
-
   onClickOutside() {
     this.setState({ show: false });
     document.querySelector("#overlay").style.display = "none";
-    document.body.style.pointerEvents = "auto";
+    document.querySelector(".body").style.pointerEvents = "auto";
   }
 
   handleCartOpen() {
@@ -30,11 +31,11 @@ class MiniCart extends ClickOutsideToClose {
     switch (this.state.show) {
       case false:
         document.querySelector("#overlay").style.display = "block";
-        document.body.style.pointerEvents = "none";
+        document.querySelector(".body").style.pointerEvents = "none";
         break;
       default:
         document.querySelector("#overlay").style.display = "none";
-        document.body.style.pointerEvents = "auto";
+        document.querySelector(".body").style.pointerEvents = "auto";
         break;
     }
   }
@@ -46,7 +47,11 @@ class MiniCart extends ClickOutsideToClose {
           handleCartOpen={this.handleCartOpen}
           show={this.state.show}
         />
-        <MiniCartMenu show={this.state.show} />
+        <MiniCartMenu
+          show={this.state.show}
+          cart={this.props.cart}
+          currency={this.props.currency}
+        />
       </div>
     );
   }
@@ -61,14 +66,32 @@ class MiniCartMenu extends React.Component {
     return (
       <>
         <div className="mini-cart-menu menu">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda,
-          debitis eum excepturi laborum maiores praesentium? Alias at ea error
-          iste perferendis perspiciatis quia quos sapiente veritatis voluptate.
-          Adipisci aliquam asperiores autem consequuntur dicta, dolor ea eveniet
-          excepturi facere fuga fugit, illum itaque nobis perferendis
-          repudiandae sit sunt velit veniam voluptatum. Lorem ipsum dolor sit
-          amet, consectetur adipisicing elit. At dolorem harum quaerat vero
-          vitae! Distinctio fugit nesciunt nobis repudiandae voluptate!
+          <div className="mini-cart-info">
+            <div id="mini-cart-heading">
+              <span>My bag, </span> 3 items
+            </div>
+            <div className="mini-cart-items">
+              {this.props.cart.map((cartItem) => (
+                <MiniCartItem
+                  item={cartItem}
+                  key={uuid()}
+                  currency={this.props.currency}
+                />
+              ))}
+            </div>
+            <div id="mini-cart-footer">
+              <span>Total</span>
+              <span id="m-price">$200</span>
+            </div>
+          </div>
+          <div className="mini-cart-buttons">
+            <div className="button" id="view-bag">
+              view bag
+            </div>
+            <div className="button" id="check-out">
+              check out
+            </div>
+          </div>
         </div>
       </>
     );

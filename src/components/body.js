@@ -11,6 +11,7 @@ class Body extends React.Component {
           <CategoryItems
             category={this.props.category}
             currency={this.props.currency}
+            handleAddToCart={this.props.handleAddToCart}
           />
         );
       case "pdp":

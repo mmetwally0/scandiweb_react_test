@@ -28,7 +28,7 @@ class NavBar extends React.Component {
             currency={this.props.currency}
             handleCurrencyChange={this.props.handleCurrencyChange}
           />
-          <MiniCart />
+          <MiniCart cart={this.props.cart} currency={this.props.currency} />
         </div>
       </nav>
     );

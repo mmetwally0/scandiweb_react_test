@@ -19,23 +19,25 @@ class App extends React.Component {
     this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
     this.handleSavePreference = this.handleSavePreference.bind(this);
+    this.handleCartChanges = this.handleCartChanges.bind(this);
   }
 
   componentDidMount() {
     if (this.state.storeState) {
       // Retrieve the state saved in the browser
-      let savedState = localStorage.getItem("APP_STATE");
-      savedState = JSON.parse(savedState);
+      const savedState = localStorage.getItem("APP_STATE"); // String
+      const savedStateObject = JSON.parse(savedState); // Object
+      const stringifiedState = JSON.stringify(this.state); // String
 
       // If there is state saved, set the current state to it.
       savedState
-        ? savedState !== this.state && this.setState(savedState) // If the saved state doesn't match the current state replace the current state
-        : localStorage.setItem("APP_STATE", JSON.stringify(this.state)); // If there is no saved state, save the current state
+        ? savedState !== stringifiedState && this.setState(savedStateObject) // If the saved state doesn't match the current state replace the current state
+        : localStorage.setItem("APP_STATE", stringifiedState); // If there is no saved state, save the current state
     }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    this.state !== prevState && this.state.storeState
+    this.state.storeState
       ? localStorage.setItem("APP_STATE", JSON.stringify(this.state))
       : localStorage.removeItem("APP_STATE");
   }
@@ -52,6 +54,11 @@ class App extends React.Component {
     this.setState({ storeState: !this.state.storeState });
   }
 
+  handleCartChanges(item) {
+    this.setState({ cart: [...this.state.cart, item] });
+    console.log(item);
+  }
+
   render() {
     return (
       // Nav Bar component
@@ -60,6 +67,7 @@ class App extends React.Component {
         <NavBar
           currency={this.state.currency}
           category={this.state.category}
+          cart={this.state.cart}
           handleCurrencyChange={this.handleCurrencyChange}
           handleCategoryChange={this.handleCategoryChange}
           handleSavePreference={this.handleSavePreference}
@@ -68,6 +76,7 @@ class App extends React.Component {
           category={this.state.category}
           bodyPage={this.state.bodyPage}
           currency={this.state.currency}
+          handleAddToCart={this.handleCartChanges}
         />
         <div id="overlay"></div>
       </>
