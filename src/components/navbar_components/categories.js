@@ -16,11 +16,12 @@ class Categories extends React.Component {
               {data.categories.map((category) => (
                 <li
                   key={category.name}
-                  onClick={this.props.handleCategoryChange}
+                  onClick={() => {
+                    this.props.handleCategoryChange(category.name);
+                  }}
                   className={
                     this.props.category === category.name ? "active" : null
                   }
-                  data-name={category.name}
                 >
                   {category.name}
                 </li>

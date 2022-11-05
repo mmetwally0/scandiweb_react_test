@@ -1,9 +1,9 @@
 import React from "react";
-import { Query } from "@apollo/client/react/components";
-import { PRODUCT_BY_ID } from "../queries";
 import addIcon from "../../images/plus-square.svg";
 import removeIcon from "../../images/minus-square.svg";
 import { getPriceByCurrency } from "../../functions";
+import Attributes from "./attributes";
+import uuid from "react-uuid";
 
 class MiniCartItem extends React.Component {
   render() {
@@ -13,7 +13,10 @@ class MiniCartItem extends React.Component {
           item={this.props.item}
           currency={this.props.currency}
         />
-        <MiniCartItemControls item={this.props.item} />
+        <MiniCartItemControls
+          item={this.props.item}
+          handleChangeCart={this.props.handleChangeCart}
+        />
         <div className="minicart-item-image">
           <img src={this.props.item.gallery[0]} alt="" />
         </div>
@@ -26,9 +29,24 @@ class MiniCartItemInfo extends React.Component {
   render() {
     return (
       <div className="minicart-item-info">
-        <p>{this.props.item.name}</p>
-        <p>{getPriceByCurrency(this.props.item.prices, this.props.currency)}</p>
+        <div className="m-item-name">{this.props.item.name}</div>
+        <div className="m-item-price">
+          {getPriceByCurrency(
+            this.props.item.prices,
+            this.props.currency,
+            this.props.item.amount
+          )}
+        </div>
         {/*Attributes here*/}
+        {this.props.item.attributes.map((attribute) => {
+          return (
+            <Attributes
+              attribute={attribute}
+              selectedAttributes={this.props.item.selectedAttributes}
+              key={uuid()}
+            />
+          );
+        })}
       </div>
     );
   }
@@ -38,9 +56,21 @@ class MiniCartItemControls extends React.Component {
   render() {
     return (
       <div className="minicart-item-controls">
-        <img src={addIcon} alt="" />
-        {this.props.item.amount}
-        <img src={removeIcon} alt="" />
+        <img
+          src={addIcon}
+          alt=""
+          onClick={() => {
+            this.props.handleChangeCart(this.props.item, "add");
+          }}
+        />
+        <div>{this.props.item.amount}</div>
+        <img
+          src={removeIcon}
+          alt=""
+          onClick={() => {
+            this.props.handleChangeCart(this.props.item, "remove");
+          }}
+        />
       </div>
     );
   }

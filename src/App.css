@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap");
 html,
 body {
   margin: 0;
@@ -141,6 +142,22 @@ body {
 
 .minicart-controls {
   cursor: pointer;
+  position: relative;
+}
+.minicart-controls .cart-label {
+  position: absolute;
+  z-index: -1;
+  top: -7px;
+  right: -14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1d1f22;
+  color: white;
+  font-family: "roboto", "sans-serif";
+  font-weight: 700;
+  border-radius: 60px;
+  width: 20px;
 }
 
 .minicart {
@@ -298,17 +315,16 @@ body {
   display: flex;
   column-gap: 8px;
   margin-bottom: 42px;
+  height: fit-content;
 }
 
 .minicart-item-image {
-  width: 121px;
-  height: 190px;
+  max-width: 121px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .minicart-item-image img {
-  max-height: 100%;
   max-width: 100%;
 }
 
@@ -319,6 +335,21 @@ body {
   font-weight: 300;
   line-height: 160%;
   color: #1D1F22;
+}
+.minicart-item-info .m-item-price {
+  font-weight: 500;
+  line-height: 160%;
+  margin-bottom: 8px;
+}
+.minicart-item-info .m-item-name {
+  margin-bottom: 4px;
+}
+.minicart-item-info .attribute {
+  margin-bottom: 8px;
+}
+
+.minicart-item-info .attribute:last-child {
+  margin-bottom: 0;
 }
 
 .minicart-item-controls {
@@ -332,6 +363,49 @@ body {
 }
 .minicart-item-controls img {
   cursor: pointer;
+}
+
+#m-attribute-values {
+  display: flex;
+  column-gap: 8px;
+}
+#m-attribute-values .text-attribute {
+  box-sizing: border-box;
+  height: 24px;
+  min-width: 24px;
+  width: fit-content;
+  border: 1px solid #1D1F22;
+  padding: 0 2px;
+  text-align: center;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 160%;
+}
+#m-attribute-values .text-attribute.selected {
+  background: #1D1F22;
+  color: #FFFFFF;
+}
+#m-attribute-values .swatch-attribute {
+  width: 16px;
+  height: 16px;
+  position: relative;
+}
+#m-attribute-values .swatch-attribute.selected:after {
+  content: "";
+  width: 18px;
+  height: 19px;
+  top: -3px;
+  left: -2px;
+  position: absolute;
+  border: 1px solid #5ece7b;
+}
+
+#m-attribute-name {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  margin-bottom: 8px;
 }
 
 ::-webkit-scrollbar {
