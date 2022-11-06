@@ -29,7 +29,11 @@ class MiniCartItemInfo extends React.Component {
   render() {
     return (
       <div className="minicart-item-info">
-        <div className="m-item-name">{this.props.item.name}</div>
+        <div className="m-item-name">
+          {this.props.item.brand}
+          <br />
+          {this.props.item.name}
+        </div>
         <div className="m-item-price">
           {getPriceByCurrency(
             this.props.item.prices,

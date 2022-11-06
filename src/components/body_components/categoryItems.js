@@ -29,6 +29,7 @@ class CategoryItems extends React.Component {
                   key={product.id}
                   currency={this.props.currency}
                   handleAddToCart={this.props.handleAddToCart}
+                  handleChangeProduct={this.props.handleChangeProduct}
                 />
               ));
             }}
@@ -57,6 +58,12 @@ class CategoryPageItem extends React.Component {
         <div className="item-price">
           {getPriceByCurrency(product.prices, currency)}
         </div>
+        <div
+          id="category-item-overlay"
+          onClick={() => {
+            this.props.handleChangeProduct(product);
+          }}
+        ></div>
       </div>
     );
   }

@@ -14,6 +14,7 @@ class App extends React.Component {
       category: "all", // Current category
       cart: [], // Stores all the items of the cart
       bodyPage: "category", // Whether to show PDP, Category Page, Cart
+      product: {},
       storeState: true, // Save the User's cart browsing state
     };
 
@@ -22,6 +23,7 @@ class App extends React.Component {
     this.handleSavePreference = this.handleSavePreference.bind(this);
     this.handleAddToCart = this.handleAddToCart.bind(this);
     this.handleChangeCart = this.handleChangeCart.bind(this);
+    this.handleChangeProduct = this.handleChangeProduct.bind(this);
   }
 
   componentDidMount() {
@@ -49,7 +51,7 @@ class App extends React.Component {
   }
 
   handleCategoryChange(name) {
-    this.setState({ category: name });
+    this.setState({ category: name, bodyPage: "category" });
   }
 
   handleSavePreference() {
@@ -106,6 +108,10 @@ class App extends React.Component {
     }
   }
 
+  handleChangeProduct(product) {
+    this.setState({ bodyPage: "pdp", product: product });
+  }
+
   render() {
     return (
       // Nav Bar component
@@ -124,7 +130,9 @@ class App extends React.Component {
           category={this.state.category}
           bodyPage={this.state.bodyPage}
           currency={this.state.currency}
+          product={this.state.product}
           handleAddToCart={this.handleAddToCart}
+          handleChangeProduct={this.handleChangeProduct}
         />
         <div id="overlay"></div>
       </>
