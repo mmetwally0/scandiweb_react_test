@@ -54,6 +54,9 @@ class MiniCart extends ClickOutsideToClose {
           cart={this.props.cart}
           currency={this.props.currency}
           handleChangeCart={this.props.handleChangeCart}
+          handleClearCart={this.props.handleClearCart}
+          handleOpenCart={this.props.handleOpenCart}
+          handleCartOpen={this.handleCartOpen}
         />
       </div>
     );
@@ -89,10 +92,21 @@ class MiniCartMenu extends React.Component {
             </div>
           </div>
           <div className="mini-cart-buttons">
-            <div className="button" id="view-bag">
+            <div
+              className="button"
+              id="view-bag"
+              onClick={() => {
+                this.props.handleOpenCart();
+                this.props.handleCartOpen();
+              }}
+            >
               view bag
             </div>
-            <div className="button" id="check-out">
+            <div
+              className="button"
+              id="check-out"
+              onClick={this.props.handleClearCart}
+            >
               check out
             </div>
           </div>

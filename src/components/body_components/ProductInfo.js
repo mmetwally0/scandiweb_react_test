@@ -1,5 +1,5 @@
 import React from "react";
-import { getPriceByCurrency } from "../../functions";
+import { createCartItem, getPriceByCurrency } from "../../functions";
 import uuid from "react-uuid";
 import ProductAttributes from "./ProductAttributes";
 
@@ -30,7 +30,11 @@ class ProductInfo extends React.Component {
             this.props.product.amount
           )}
         </div>
-        <AddToCartButton />
+        <AddToCartButton
+          selectedAttributes={this.props.selectedAttributes}
+          product={this.props.product}
+          handleAddToCart={this.props.handleAddToCart}
+        />
       </div>
     );
   }
@@ -38,7 +42,19 @@ class ProductInfo extends React.Component {
 
 class AddToCartButton extends React.Component {
   render() {
-    return <div className="add-to-cart-button">add to cart</div>;
+    return (
+      <div
+        className="add-to-cart-button"
+        onClick={() => {
+          this.props.handleAddToCart(
+            createCartItem(this.props.product, this.props.selectedAttributes)
+          );
+        }}
+      >
+        add to cart
+      </div>
+    );
   }
 }
+
 export default ProductInfo;

@@ -2,7 +2,8 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 import Body from "./components/body";
 import React from "react";
-import { isLastItem, itemInCart } from "./functions";
+import { isLastItem, itemInCart, isItemIdentical } from "./functions";
+import cart from "./components/body_components/cart";
 
 class App extends React.Component {
   constructor(props) {
@@ -24,6 +25,8 @@ class App extends React.Component {
     this.handleAddToCart = this.handleAddToCart.bind(this);
     this.handleChangeCart = this.handleChangeCart.bind(this);
     this.handleChangeProduct = this.handleChangeProduct.bind(this);
+    this.handleClearCart = this.handleClearCart.bind(this);
+    this.handleOpenCart = this.handleOpenCart.bind(this);
   }
 
   componentDidMount() {
@@ -66,30 +69,18 @@ class App extends React.Component {
 
   handleRemoveFromCart(item) {
     let cartCopy = this.state.cart.filter(
-      (cartItem) => item.id !== cartItem.id
+      (cartItem) => !isItemIdentical(item, cartItem)
     );
     this.setState({ cart: cartCopy });
   }
 
-  handleDecreaseItemAmount(item) {
+  handleChangeItemAmount(item, add) {
     let cartCopy = this.state.cart.map((cartItem) =>
-      item.id !== cartItem.id
+      !isItemIdentical(item, cartItem)
         ? cartItem
         : {
             ...cartItem,
-            amount: cartItem.amount - 1,
-          }
-    );
-    this.setState({ cart: cartCopy });
-  }
-
-  handleIncreaseItemAmount(item) {
-    let cartCopy = this.state.cart.map((cartItem) =>
-      item.id !== cartItem.id
-        ? cartItem
-        : {
-            ...cartItem,
-            amount: cartItem.amount + 1,
+            amount: add ? cartItem.amount + 1 : cartItem.amount - 1,
           }
     );
     this.setState({ cart: cartCopy });
@@ -98,18 +89,26 @@ class App extends React.Component {
   handleChangeCart(item, action) {
     switch (action) {
       case "add":
-        this.handleIncreaseItemAmount(item);
+        this.handleChangeItemAmount(item, true);
         break;
       default: // Remove item from cart
         isLastItem(this.state.cart, item)
           ? this.handleRemoveFromCart(item)
-          : this.handleDecreaseItemAmount(item);
+          : this.handleChangeItemAmount(item, false);
         break;
     }
   }
 
   handleChangeProduct(product) {
     this.setState({ bodyPage: "pdp", product: product });
+  }
+
+  handleOpenCart() {
+    this.setState({ bodyPage: "cart" });
+  }
+
+  handleClearCart() {
+    this.setState({ cart: [] });
   }
 
   render() {
@@ -125,6 +124,8 @@ class App extends React.Component {
           handleCategoryChange={this.handleCategoryChange}
           handleSavePreference={this.handleSavePreference}
           handleChangeCart={this.handleChangeCart}
+          handleClearCart={this.handleClearCart}
+          handleOpenCart={this.handleOpenCart}
         />
         <Body
           category={this.state.category}
@@ -133,6 +134,9 @@ class App extends React.Component {
           product={this.state.product}
           handleAddToCart={this.handleAddToCart}
           handleChangeProduct={this.handleChangeProduct}
+          cart={this.state.cart}
+          handleChangeCart={this.handleChangeCart}
+          handleClearCart={this.handleClearCart}
         />
         <div id="overlay"></div>
       </>

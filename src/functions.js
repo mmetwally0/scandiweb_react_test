@@ -18,30 +18,46 @@ export const getPriceByCurrency = (
 };
 
 //Creates an object in the cart, storing Item info, amount, and the selected attributes
-export const createCartItem = (originalItem, amount, selectedAttributes) => {
+export const createCartItem = (originalItem, selectedAttributes) => {
   let item = { ...originalItem };
-  item["amount"] = amount;
+  item["amount"] = 1;
   item["selectedAttributes"] = selectedAttributes;
   return item;
 };
 
 // Adds the first option of each attribute to the item by default
 export const addDefaultAttributes = (originalItem) => {
-  let attributes = [];
+  let attributes = {};
   originalItem.attributes.forEach((attribute) => {
-    attributes.push(JSON.stringify(attribute.items[0]));
+    attributes[attribute.id] = JSON.stringify(attribute.items[0]);
   });
   return attributes;
 };
 
 // Checks if the current attribute is selected
-export const isSelectedAttribute = (att, selectedAttributes) => {
-  return selectedAttributes.includes(JSON.stringify(att));
+export const isSelectedAttribute = (
+  attributeValue,
+  attribute,
+  selectedAttributes
+) => {
+  const answer =
+    Object.hasOwn(selectedAttributes, attribute.id) &&
+    selectedAttributes[attribute.id] === JSON.stringify(attributeValue);
+  return answer;
 };
 
 // Creates a dynamic classname for the attribute, marking it as selected or not
-export const getClassName = (type, att, defaultAttributes) => {
-  const selected = isSelectedAttribute(att, defaultAttributes)
+export const getClassName = (
+  type,
+  attributeValue,
+  defaultAttributes,
+  attribute
+) => {
+  const selected = isSelectedAttribute(
+    attributeValue,
+    attribute,
+    defaultAttributes
+  )
     ? " " + "selected"
     : "";
   return `${type}-attribute` + selected;
@@ -61,7 +77,7 @@ export const getCartTotalCost = (cart, currency) => {
   cart.forEach((item) => {
     cost += getPriceByCurrency(item.prices, currency, item.amount, "number");
   });
-  return `${currency} ${cost.toFixed(2)}`;
+  return `${currency}${cost.toFixed(2)}`;
 };
 
 // Checks if an item is in the cart
@@ -78,6 +94,15 @@ export const itemInCart = (cart, item) => {
 
 // Checks whether the amount is 1, hence being the last of type
 export const isLastItem = (cart, item) => {
-  const foundItem = cart.find((cartItem) => cartItem.id === item.id);
+  const foundItem = cart.find((cartItem) => isItemIdentical(item, cartItem));
   return foundItem.amount === 1;
+};
+
+export const isItemIdentical = (item1, item2) => {
+  const firstComparison = item1.id === item2.id;
+  const secondComparison =
+    JSON.stringify(item1.selectedAttributes) ===
+    JSON.stringify(item2.selectedAttributes);
+
+  return firstComparison && secondComparison;
 };

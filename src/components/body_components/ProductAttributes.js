@@ -3,13 +3,14 @@ import uuid from "react-uuid";
 import { getClassName } from "../../functions";
 
 class ProductAttributes extends React.Component {
-  renderSwitch(param, data) {
+  renderSwitch(param, attributeValues, attribute) {
     switch (param) {
       case "text":
         return (
           <TextAttribute
             key={uuid()}
-            data={data}
+            data={attributeValues}
+            attribute={attribute}
             selectedAttributes={this.props.selectedAttributes}
             handleChangeAttributes={this.props.handleChangeAttributes}
           />
@@ -18,7 +19,8 @@ class ProductAttributes extends React.Component {
         return (
           <SwatchAttribute
             key={uuid()}
-            data={data}
+            data={attributeValues}
+            attribute={attribute}
             selectedAttributes={this.props.selectedAttributes}
             handleChangeAttributes={this.props.handleChangeAttributes}
           />
@@ -33,8 +35,12 @@ class ProductAttributes extends React.Component {
       <div className="attribute">
         <div id="m-attribute-name">{this.props.attribute.name}:</div>
         <div id="m-attribute-values">
-          {this.props.attribute.items.map((att) =>
-            this.renderSwitch(this.props.attribute.type, att)
+          {this.props.attribute.items.map((attributeValues) =>
+            this.renderSwitch(
+              this.props.attribute.type,
+              attributeValues,
+              this.props.attribute
+            )
           )}
         </div>
       </div>
@@ -49,10 +55,14 @@ class TextAttribute extends React.Component {
         className={getClassName(
           "text",
           this.props.data,
-          this.props.selectedAttributes
+          this.props.selectedAttributes,
+          this.props.attribute
         )}
         onClick={() => {
-          this.props.handleChangeAttributes(this.props.data.value);
+          this.props.handleChangeAttributes(
+            this.props.data,
+            this.props.attribute
+          );
         }}
       >
         {this.props.data.value}
@@ -69,10 +79,14 @@ class SwatchAttribute extends React.Component {
         className={getClassName(
           "swatch",
           this.props.data,
-          this.props.selectedAttributes
+          this.props.selectedAttributes,
+          this.props.attribute
         )}
         onClick={() => {
-          this.props.handleChangeAttributes(this.props.data.value);
+          this.props.handleChangeAttributes(
+            this.props.data,
+            this.props.attribute
+          );
         }}
         style={style}
       ></div>

@@ -20,10 +20,18 @@ class Body extends React.Component {
           <ProductPage
             productId={this.props.product.id}
             currency={this.props.currency}
+            handleAddToCart={this.props.handleAddToCart}
           />
         );
       case "cart":
-        return <Cart />;
+        return (
+          <Cart
+            currency={this.props.currency}
+            cart={this.props.cart}
+            handleChangeCart={this.props.handleChangeCart}
+            handleClearCart={this.props.handleClearCart}
+          />
+        );
     }
   }
 }

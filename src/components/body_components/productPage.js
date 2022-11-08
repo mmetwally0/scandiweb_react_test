@@ -19,7 +19,11 @@ class ProductPage extends React.Component {
           if (loading) return null;
 
           return (
-            <Product product={data.product} currency={this.props.currency} />
+            <Product
+              product={data.product}
+              currency={this.props.currency}
+              handleAddToCart={this.props.handleAddToCart}
+            />
           );
         }}
       </Query>
@@ -32,23 +36,23 @@ class Product extends React.Component {
     super(props);
 
     this.state = {
-      selectedAttributes: [],
+      selectedAttributes: addDefaultAttributes(this.props.product),
     };
 
     this.handleChangeAttributes = this.handleChangeAttributes.bind(this);
   }
 
-  componentDidMount() {
-    const defaults = addDefaultAttributes(this.props.product);
-    this.setState({ selectedAttributes: defaults });
-  }
-
-  handleChangeAttributes(attribute) {
-    if (!isSelectedAttribute(attribute, this.state.selectedAttributes)) {
-      this.setState({
-        selectedAttributes: [...this.state.selectedAttributes, attribute],
-      });
-      console.log("attribute not selected");
+  handleChangeAttributes(attributeValue, attribute) {
+    if (
+      !isSelectedAttribute(
+        attributeValue,
+        attribute,
+        this.state.selectedAttributes
+      )
+    ) {
+      const placeHolder = { ...this.state.selectedAttributes };
+      placeHolder[attribute.id] = JSON.stringify(attributeValue);
+      this.setState({ selectedAttributes: placeHolder });
     }
   }
 
@@ -63,6 +67,7 @@ class Product extends React.Component {
           currency={currency}
           selectedAttributes={this.state.selectedAttributes}
           handleChangeAttributes={this.handleChangeAttributes}
+          handleAddToCart={this.props.handleAddToCart}
         />
       </div>
     );

@@ -90,7 +90,7 @@ class AddToCartIcon extends React.Component {
               onClick={() => {
                 const product = data.product;
                 const attributes = addDefaultAttributes(product);
-                const newItem = createCartItem(product, 1, attributes);
+                const newItem = createCartItem(product, attributes);
                 this.props.handleAddToCart(newItem);
               }}
             />
