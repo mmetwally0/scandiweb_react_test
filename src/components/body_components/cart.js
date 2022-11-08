@@ -4,22 +4,24 @@ import CartInfo from "./CartInfo";
 
 class Cart extends React.Component {
   render() {
+    const { cart, currency, handleChangeCart, handleClearCart } = this.props;
     return (
       <div className="cart body">
         <h1>CART</h1>
         <div className="line"></div>
         <CartItems
-          cart={this.props.cart}
-          currency={this.props.currency}
-          handleChangeCart={this.props.handleChangeCart}
+          cart={cart}
+          currency={currency}
+          handleChangeCart={handleChangeCart}
         />
         <CartInfo
-          cart={this.props.cart}
-          currency={this.props.currency}
-          handleClearCart={this.props.handleClearCart}
+          cart={cart}
+          currency={currency}
+          handleClearCart={handleClearCart}
         />
       </div>
     );
   }
 }
+
 export default Cart;

@@ -1,6 +1,6 @@
 import React from "react";
 import uuid from "react-uuid";
-import { isSelectedAttribute, getClassName } from "../../functions";
+import { getClassName } from "../../functions";
 
 export class Attributes extends React.Component {
   renderSwitch(param, attributeValues, attribute) {
@@ -29,16 +29,13 @@ export class Attributes extends React.Component {
   }
 
   render() {
+    const { attribute } = this.props;
     return (
       <div className="attribute">
-        <div id="m-attribute-name">{this.props.attribute.name}</div>
+        <div id="m-attribute-name">{attribute.name}</div>
         <div id="m-attribute-values">
-          {this.props.attribute.items.map((attributeValues) =>
-            this.renderSwitch(
-              this.props.attribute.type,
-              attributeValues,
-              this.props.attribute
-            )
+          {attribute.items.map((attributeValues) =>
+            this.renderSwitch(attribute.type, attributeValues, attribute)
           )}
         </div>
       </div>
@@ -48,16 +45,12 @@ export class Attributes extends React.Component {
 
 class TextAttribute extends React.Component {
   render() {
+    const { data, attribute, selectedAttributes } = this.props;
     return (
       <div
-        className={getClassName(
-          "text",
-          this.props.data,
-          this.props.selectedAttributes,
-          this.props.attribute
-        )}
+        className={getClassName("text", data, selectedAttributes, attribute)}
       >
-        {this.props.data.value}
+        {data.value}
       </div>
     );
   }
@@ -65,15 +58,12 @@ class TextAttribute extends React.Component {
 
 class SwatchAttribute extends React.Component {
   render() {
+    const { data, attribute, selectedAttributes } = this.props;
     const style = { backgroundColor: this.props.data.value };
+
     return (
       <div
-        className={getClassName(
-          "swatch",
-          this.props.data,
-          this.props.selectedAttributes,
-          this.props.attribute
-        )}
+        className={getClassName("swatch", data, selectedAttributes, attribute)}
         style={style}
       ></div>
     );

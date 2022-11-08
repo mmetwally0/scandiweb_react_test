@@ -21,11 +21,14 @@ class CurrencySwitcher extends ClickOutsideToClose {
     this.setState({ show: false });
   }
 
+  // Show or hide the currency switcher
   handleCartControls() {
     this.setState({ show: !this.state.show });
   }
 
   render() {
+    const { handleCurrencyChange } = this.props;
+
     return (
       <div className="currency-switcher" ref={this.ref}>
         <CurrencyMenuControls
@@ -37,13 +40,8 @@ class CurrencySwitcher extends ClickOutsideToClose {
         <Query query={ALL_CURRENCIES}>
           {({ loading, data }) => {
             // Wait until data is fetched before rendering anything
-            if (loading) {
-              return null;
-            }
-
-            if (!this.state.show) {
-              return null;
-            }
+            if (loading) return null;
+            if (!this.state.show) return null;
 
             return (
               <>
@@ -55,14 +53,14 @@ class CurrencySwitcher extends ClickOutsideToClose {
                         className={
                           this.props.currency === currency.symbol
                             ? "active"
-                            : null
+                            : ""
                         }
                         onClick={() => {
-                          this.props.handleCurrencyChange(currency.symbol);
+                          handleCurrencyChange(currency.symbol);
                           this.handleCartControls();
                         }}
                       >
-                        {`${currency.symbol}  ${currency.label}`}
+                        {currency.symbol + "  " + currency.label}
                       </li>
                     ))}
                   </ul>
@@ -78,13 +76,11 @@ class CurrencySwitcher extends ClickOutsideToClose {
 
 class CurrencyMenuControls extends React.Component {
   render() {
+    const { currency, show, handleCartControls } = this.props;
     return (
-      <div
-        className="currency-controls"
-        onClick={this.props.handleCartControls}
-      >
-        {this.props.currency}
-        <img src={arrow} alt="" className={this.props.show ? "active" : null} />
+      <div className="currency-controls" onClick={handleCartControls}>
+        {currency}
+        <img src={arrow} alt="" className={show ? "active" : ""} />
       </div>
     );
   }

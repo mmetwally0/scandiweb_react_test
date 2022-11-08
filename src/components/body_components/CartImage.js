@@ -26,13 +26,13 @@ class CartImage extends React.Component {
     this.setState({ currentImage: this.props.gallery[index] });
   }
 
-  handleNextImage(index) {}
-
   render() {
+    const { gallery } = this.props;
+
     return (
       <div className="cart-item-image">
         <img src={this.state.currentImage} alt="" />
-        {this.props.gallery.length > 1 ? (
+        {gallery.length > 1 && (
           <div className="image-controls">
             <img
               src={swipeLeft}
@@ -49,7 +49,7 @@ class CartImage extends React.Component {
               }}
             />
           </div>
-        ) : null}
+        )}
       </div>
     );
   }

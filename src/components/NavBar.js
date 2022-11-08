@@ -11,29 +11,41 @@ class NavBar extends React.Component {
   }
 
   render() {
+    const {
+      category,
+      currency,
+      cart,
+      handleCategoryChange,
+      handleSavePreference,
+      handleCurrencyChange,
+      handleChangeCart,
+      handleClearCart,
+      handleOpenCart,
+    } = this.props;
+
     return (
       <nav className="nav-bar">
         <Categories
-          handleCategoryChange={this.props.handleCategoryChange}
-          category={this.props.category}
+          handleCategoryChange={handleCategoryChange}
+          category={category}
         />
         <img
           src={logo}
           alt=""
           className="logo"
-          onClick={this.props.handleSavePreference}
+          onClick={handleSavePreference}
         />
         <div className="nav-links">
           <CurrencySwitcher
-            currency={this.props.currency}
-            handleCurrencyChange={this.props.handleCurrencyChange}
+            currency={currency}
+            handleCurrencyChange={handleCurrencyChange}
           />
           <MiniCart
-            cart={this.props.cart}
-            currency={this.props.currency}
-            handleChangeCart={this.props.handleChangeCart}
-            handleClearCart={this.props.handleClearCart}
-            handleOpenCart={this.props.handleOpenCart}
+            cart={cart}
+            currency={currency}
+            handleChangeCart={handleChangeCart}
+            handleClearCart={handleClearCart}
+            handleOpenCart={handleOpenCart}
           />
         </div>
       </nav>

@@ -4,6 +4,7 @@ import Body from "./components/body";
 import React from "react";
 import { isLastItem, itemInCart, isItemIdentical } from "./functions";
 import cart from "./components/body_components/cart";
+import Alert from "./components/Alert";
 
 class App extends React.Component {
   constructor(props) {
@@ -17,15 +18,17 @@ class App extends React.Component {
       bodyPage: "category", // Whether to show PDP, Category Page, Cart
       product: {},
       storeState: true, // Save the User's cart browsing state
+      showAlert: false,
+      alertMessage: "",
     };
 
     this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
     this.handleSavePreference = this.handleSavePreference.bind(this);
-    this.handleAddToCart = this.handleAddToCart.bind(this);
-    this.handleChangeCart = this.handleChangeCart.bind(this);
     this.handleChangeProduct = this.handleChangeProduct.bind(this);
+    this.handleChangeCart = this.handleChangeCart.bind(this);
     this.handleClearCart = this.handleClearCart.bind(this);
+    this.handleAddToCart = this.handleAddToCart.bind(this);
     this.handleOpenCart = this.handleOpenCart.bind(this);
   }
 
@@ -41,40 +44,53 @@ class App extends React.Component {
         ? savedState !== stringifiedState && this.setState(savedStateObject) // If the saved state doesn't match the current state replace the current state
         : localStorage.setItem("APP_STATE", stringifiedState); // If there is no saved state, save the current state
     }
+
+    this.setState({ showAlert: false });
   }
 
+  // On component Update, Re-save the state locally
   componentDidUpdate(prevProps, prevState, snapshot) {
     this.state.storeState
       ? localStorage.setItem("APP_STATE", JSON.stringify(this.state))
       : localStorage.removeItem("APP_STATE");
   }
 
+  // Change the currency of the store
   handleCurrencyChange(currency) {
     this.setState({ currency: currency });
   }
 
+  // Change the current category displayed
   handleCategoryChange(name) {
     this.setState({ category: name, bodyPage: "category" });
   }
 
+  // Alters the save state
   handleSavePreference() {
+    this.handleAlert(
+      this.state.storeState ? "All Clean! 🗑️" : "Saving History ✅"
+    );
     this.setState({ storeState: !this.state.storeState });
   }
 
+  // Handles adding items to cart
   handleAddToCart(item) {
-    !itemInCart(this.state.cart, item)
-      ? this.setState({ cart: [...this.state.cart, item] })
-      : this.handleChangeCart(item, "add");
+    !itemInCart(this.state.cart, item) // if item is not in the cart
+      ? this.setState({ cart: [...this.state.cart, item] }) // Add it
+      : this.handleChangeCart(item, "add"); // If item is already in the cart, increment its amount by one
   }
 
+  // Handles removing from cart
   handleRemoveFromCart(item) {
     let cartCopy = this.state.cart.filter(
       (cartItem) => !isItemIdentical(item, cartItem)
-    );
+    ); // Creates a new cart by removing the item
     this.setState({ cart: cartCopy });
   }
 
+  // Handles changing the amount of item in cart
   handleChangeItemAmount(item, add) {
+    // Loop through the cart items, if the specified item is found perform the operation
     let cartCopy = this.state.cart.map((cartItem) =>
       !isItemIdentical(item, cartItem)
         ? cartItem
@@ -86,6 +102,7 @@ class App extends React.Component {
     this.setState({ cart: cartCopy });
   }
 
+  // Checks the amounts of the item, and performs the correct operation
   handleChangeCart(item, action) {
     switch (action) {
       case "add":
@@ -99,27 +116,40 @@ class App extends React.Component {
     }
   }
 
+  // Opens the category page
   handleChangeProduct(product) {
     this.setState({ bodyPage: "pdp", product: product });
   }
 
+  // Opens the Cart Page
   handleOpenCart() {
     this.setState({ bodyPage: "cart" });
   }
 
+  // Deletes all items from cart i.e. checkout
   handleClearCart() {
     this.setState({ cart: [] });
+    this.handleAlert("Order Successful ✅");
+  }
+
+  handleAlert(message) {
+    this.setState({ showAlert: true, alertMessage: message });
+
+    setTimeout(() => {
+      this.setState({ showAlert: false });
+    }, 3000);
   }
 
   render() {
+    const { currency, category, cart, bodyPage, product } = this.state;
     return (
       // Nav Bar component
       // Body Component
       <>
         <NavBar
-          currency={this.state.currency}
-          category={this.state.category}
-          cart={this.state.cart}
+          currency={currency}
+          category={category}
+          cart={cart}
           handleCurrencyChange={this.handleCurrencyChange}
           handleCategoryChange={this.handleCategoryChange}
           handleSavePreference={this.handleSavePreference}
@@ -128,17 +158,18 @@ class App extends React.Component {
           handleOpenCart={this.handleOpenCart}
         />
         <Body
-          category={this.state.category}
-          bodyPage={this.state.bodyPage}
-          currency={this.state.currency}
-          product={this.state.product}
-          handleAddToCart={this.handleAddToCart}
+          category={category}
+          bodyPage={bodyPage}
+          currency={currency}
+          product={product}
+          cart={cart}
           handleChangeProduct={this.handleChangeProduct}
-          cart={this.state.cart}
           handleChangeCart={this.handleChangeCart}
+          handleAddToCart={this.handleAddToCart}
           handleClearCart={this.handleClearCart}
         />
         <div id="overlay"></div>
+        <Alert show={this.state.showAlert} message={this.state.alertMessage} />
       </>
     );
   }

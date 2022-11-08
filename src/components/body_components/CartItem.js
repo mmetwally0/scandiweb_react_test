@@ -8,16 +8,15 @@ import CartImage from "./CartImage";
 
 class CartItem extends React.Component {
   render() {
+    const { item, currency, handleChangeCart } = this.props;
+
     return (
       <>
         <div className="cart-item">
-          <CartItemInfo item={this.props.item} currency={this.props.currency} />
+          <CartItemInfo item={item} currency={currency} />
           <div className="left">
-            <CartItemControls
-              item={this.props.item}
-              handleChangeCart={this.props.handleChangeCart}
-            />
-            <CartImage gallery={this.props.item.gallery} />
+            <CartItemControls item={item} handleChangeCart={handleChangeCart} />
+            <CartImage gallery={item.gallery} />
           </div>
         </div>
         <div className="line"></div>
@@ -28,27 +27,24 @@ class CartItem extends React.Component {
 
 class CartItemInfo extends React.Component {
   render() {
+    const { item, currency } = this.props;
     return (
       <div className="cart-item-info">
         <div className="c-item-name">
-          <span>{this.props.item.brand}</span>
+          <span>{item.brand}</span>
           <br />
-          <span>{this.props.item.name}</span>
+          <span>{item.name}</span>
         </div>
         <div className="c-item-price">
-          {getPriceByCurrency(
-            this.props.item.prices,
-            this.props.currency,
-            this.props.item.amount
-          )}
+          {getPriceByCurrency(item.prices, currency, item.amount)}
         </div>
         {/*Attributes here*/}
-        {this.props.item.attributes.map((attribute) => {
+        {item.attributes.map((attribute) => {
           return (
             <Attributes
-              attribute={attribute}
-              selectedAttributes={this.props.item.selectedAttributes}
               key={uuid()}
+              attribute={attribute}
+              selectedAttributes={item.selectedAttributes}
             />
           );
         })}
@@ -59,21 +55,22 @@ class CartItemInfo extends React.Component {
 
 class CartItemControls extends React.Component {
   render() {
+    const { item, handleChangeCart } = this.props;
     return (
       <div className="cart-item-controls">
         <img
           src={addIcon}
           alt=""
           onClick={() => {
-            this.props.handleChangeCart(this.props.item, "add");
+            handleChangeCart(item, "add");
           }}
         />
-        <div>{this.props.item.amount}</div>
+        <div>{item.amount}</div>
         <img
           src={removeIcon}
           alt=""
           onClick={() => {
-            this.props.handleChangeCart(this.props.item, "remove");
+            handleChangeCart(item, "remove");
           }}
         />
       </div>

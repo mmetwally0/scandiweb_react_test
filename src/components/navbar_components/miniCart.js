@@ -1,6 +1,6 @@
 import React from "react";
 import ClickOutsideToClose from "../clickOutsideToClose";
-import cart from "../../images/empty-cart.svg";
+import cartIcon from "../../images/empty-cart.svg";
 import MiniCartItem from "../body_components/miniCartItem";
 import uuid from "react-uuid";
 import { getCartTotalItems, getCartTotalCost } from "../../functions";
@@ -42,20 +42,28 @@ class MiniCart extends ClickOutsideToClose {
   }
 
   render() {
+    const {
+      cart,
+      currency,
+      handleChangeCart,
+      handleClearCart,
+      handleOpenCart,
+    } = this.props;
+
     return (
       <div className="minicart" ref={this.ref}>
         <MiniCartControls
           handleCartOpen={this.handleCartOpen}
           show={this.state.show}
-          cart={this.props.cart}
+          cart={cart}
         />
         <MiniCartMenu
+          cart={cart}
+          currency={currency}
           show={this.state.show}
-          cart={this.props.cart}
-          currency={this.props.currency}
-          handleChangeCart={this.props.handleChangeCart}
-          handleClearCart={this.props.handleClearCart}
-          handleOpenCart={this.props.handleOpenCart}
+          handleChangeCart={handleChangeCart}
+          handleClearCart={handleClearCart}
+          handleOpenCart={handleOpenCart}
           handleCartOpen={this.handleCartOpen}
         />
       </div>
@@ -65,47 +73,50 @@ class MiniCart extends ClickOutsideToClose {
 
 class MiniCartMenu extends React.Component {
   render() {
-    if (!this.props.show) {
-      return null;
-    }
+    const {
+      cart,
+      currency,
+      show,
+      handleOpenCart,
+      handleClearCart,
+      handleChangeCart,
+      handleCartOpen,
+    } = this.props;
+
+    if (!show) return null;
 
     return (
       <>
         <div className="mini-cart-menu menu">
           <div className="mini-cart-info">
-            <MiniCartHeading cart={this.props.cart} />
+            <MiniCartHeading cart={cart} />
             <div className="mini-cart-items">
-              {this.props.cart.map((cartItem) => (
+              {cart.map((cartItem) => (
                 <MiniCartItem
-                  item={cartItem}
                   key={uuid()}
-                  currency={this.props.currency}
-                  handleChangeCart={this.props.handleChangeCart}
+                  item={cartItem}
+                  currency={currency}
+                  handleChangeCart={handleChangeCart}
                 />
               ))}
             </div>
-            <div id="mini-cart-footer">
-              <span>Total</span>
-              <span id="m-price">
-                {getCartTotalCost(this.props.cart, this.props.currency)}
-              </span>
-            </div>
+            <MiniCartFooter cart={cart} currency={currency} />
           </div>
           <div className="mini-cart-buttons">
             <div
               className="button"
               id="view-bag"
               onClick={() => {
-                this.props.handleOpenCart();
-                this.props.handleCartOpen();
+                handleOpenCart();
+                handleCartOpen();
               }}
             >
               view bag
             </div>
             <div
-              className="button"
+              className="button green"
               id="check-out"
-              onClick={this.props.handleClearCart}
+              onClick={handleClearCart}
             >
               check out
             </div>
@@ -118,14 +129,15 @@ class MiniCartMenu extends React.Component {
 
 class MiniCartControls extends React.Component {
   render() {
+    const { show, cart, handleCartOpen } = this.props;
     return (
       <div
-        className={`minicart-controls ${this.props.show ? "active" : null}`}
-        onClick={this.props.handleCartOpen}
+        className={"minicart-controls" + " " + (show && "active")}
+        onClick={handleCartOpen}
       >
-        <img src={cart} alt="" />
-        {getCartTotalItems(this.props.cart) !== 0 && (
-          <div className="cart-label">{getCartTotalItems(this.props.cart)}</div>
+        <img src={cartIcon} alt="" />
+        {getCartTotalItems(cart) > 0 && (
+          <div className="cart-label">{getCartTotalItems(cart)}</div>
         )}
       </div>
     );
@@ -139,6 +151,18 @@ class MiniCartHeading extends React.Component {
       <div id="mini-cart-heading">
         <span>My bag, </span>
         {count} {count === 1 ? "item" : "items"}
+      </div>
+    );
+  }
+}
+
+class MiniCartFooter extends React.Component {
+  render() {
+    const { cart, currency } = this.props;
+    return (
+      <div id="mini-cart-footer">
+        <span>Total</span>
+        <span id="m-price">{getCartTotalCost(cart, currency)}</span>
       </div>
     );
   }

@@ -7,18 +7,13 @@ import uuid from "react-uuid";
 
 class MiniCartItem extends React.Component {
   render() {
+    const { item, currency, handleChangeCart } = this.props;
     return (
       <div className="mini-cart-item">
-        <MiniCartItemInfo
-          item={this.props.item}
-          currency={this.props.currency}
-        />
-        <MiniCartItemControls
-          item={this.props.item}
-          handleChangeCart={this.props.handleChangeCart}
-        />
+        <MiniCartItemInfo item={item} currency={currency} />
+        <MiniCartItemControls item={item} handleChangeCart={handleChangeCart} />
         <div className="minicart-item-image">
-          <img src={this.props.item.gallery[0]} alt="" />
+          <img src={item.gallery[0]} alt="" />
         </div>
       </div>
     );
@@ -27,27 +22,24 @@ class MiniCartItem extends React.Component {
 
 class MiniCartItemInfo extends React.Component {
   render() {
+    const { item, currency } = this.props;
     return (
       <div className="minicart-item-info">
         <div className="m-item-name">
-          {this.props.item.brand}
+          {item.brand}
           <br />
-          {this.props.item.name}
+          {item.name}
         </div>
         <div className="m-item-price">
-          {getPriceByCurrency(
-            this.props.item.prices,
-            this.props.currency,
-            this.props.item.amount
-          )}
+          {getPriceByCurrency(item.prices, currency, item.amount)}
         </div>
         {/*Attributes here*/}
-        {this.props.item.attributes.map((attribute) => {
+        {item.attributes.map((attribute) => {
           return (
             <Attributes
-              attribute={attribute}
-              selectedAttributes={this.props.item.selectedAttributes}
               key={uuid()}
+              attribute={attribute}
+              selectedAttributes={item.selectedAttributes}
             />
           );
         })}
@@ -58,21 +50,22 @@ class MiniCartItemInfo extends React.Component {
 
 class MiniCartItemControls extends React.Component {
   render() {
+    const { item, handleChangeCart } = this.props;
     return (
       <div className="minicart-item-controls">
         <img
           src={addIcon}
           alt=""
           onClick={() => {
-            this.props.handleChangeCart(this.props.item, "add");
+            handleChangeCart(item, "add");
           }}
         />
-        <div>{this.props.item.amount}</div>
+        <div>{item.amount}</div>
         <img
           src={removeIcon}
           alt=""
           onClick={() => {
-            this.props.handleChangeCart(this.props.item, "remove");
+            handleChangeCart(item, "remove");
           }}
         />
       </div>

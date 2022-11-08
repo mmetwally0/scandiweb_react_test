@@ -13,7 +13,7 @@ export const getPriceByCurrency = (
       return price.amount * count;
     default:
       // Returns a formatted string of the price with the currency
-      return `${price.currency.symbol} ${(price.amount * count).toFixed(2)}`;
+      return price.currency.symbol + (price.amount * count).toFixed(2);
   }
 };
 
@@ -40,10 +40,7 @@ export const isSelectedAttribute = (
   attribute,
   selectedAttributes
 ) => {
-  const answer =
-    Object.hasOwn(selectedAttributes, attribute.id) &&
-    selectedAttributes[attribute.id] === JSON.stringify(attributeValue);
-  return answer;
+  return selectedAttributes[attribute.id] === JSON.stringify(attributeValue);
 };
 
 // Creates a dynamic classname for the attribute, marking it as selected or not
@@ -77,7 +74,7 @@ export const getCartTotalCost = (cart, currency) => {
   cart.forEach((item) => {
     cost += getPriceByCurrency(item.prices, currency, item.amount, "number");
   });
-  return `${currency}${cost.toFixed(2)}`;
+  return currency + cost.toFixed(2);
 };
 
 // Checks if an item is in the cart

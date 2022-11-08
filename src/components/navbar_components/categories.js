@@ -5,6 +5,8 @@ import { Query } from "@apollo/client/react/components";
 
 class Categories extends React.Component {
   render() {
+    const { handleCategoryChange } = this.props;
+
     return (
       <Query query={ALL_CATEGORIES}>
         {({ loading, data }) => {
@@ -17,10 +19,10 @@ class Categories extends React.Component {
                 <li
                   key={category.name}
                   onClick={() => {
-                    this.props.handleCategoryChange(category.name);
+                    handleCategoryChange(category.name);
                   }}
                   className={
-                    this.props.category === category.name ? "active" : null
+                    this.props.category === category.name ? "active" : ""
                   }
                 >
                   {category.name}

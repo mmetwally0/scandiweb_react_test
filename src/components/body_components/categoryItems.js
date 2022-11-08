@@ -10,13 +10,16 @@ import {
 
 class CategoryItems extends React.Component {
   render() {
+    const { category, currency, handleAddToCart, handleChangeProduct } =
+      this.props;
+
     return (
       <div className="category-page body" ref={this.ref}>
-        <h1>{this.props.category}</h1>
+        <h1>{category}</h1>
         <div className="category-items-container">
           <Query
             query={ALL_ITEMS_IN_CATEGORY}
-            variables={{ input: { title: this.props.category } }}
+            variables={{ input: { title: category } }}
           >
             {({ loading, data }) => {
               // Wait until data is fetched before rendering anything
@@ -27,9 +30,9 @@ class CategoryItems extends React.Component {
                 <CategoryPageItem
                   product={product}
                   key={product.id}
-                  currency={this.props.currency}
-                  handleAddToCart={this.props.handleAddToCart}
-                  handleChangeProduct={this.props.handleChangeProduct}
+                  currency={currency}
+                  handleAddToCart={handleAddToCart}
+                  handleChangeProduct={handleChangeProduct}
                 />
               ));
             }}
@@ -42,18 +45,18 @@ class CategoryItems extends React.Component {
 
 class CategoryPageItem extends React.Component {
   render() {
-    const { product, currency } = this.props;
+    const { product, currency, handleAddToCart, handleChangeProduct } =
+      this.props;
     return (
       <div
-        className={`item-in-category ${product.inStock ? "" : "out-of-stock"}`}
+        className={
+          "item-in-category" + " " + (!product.inStock && "out-of-stock")
+        }
       >
         <div className="item-image">
           <img src={product.gallery[0]} alt="" />
         </div>
-        <AddToCartIcon
-          itemId={product.id}
-          handleAddToCart={this.props.handleAddToCart}
-        />
+        <AddToCartIcon itemId={product.id} handleAddToCart={handleAddToCart} />
         <div className="item-name">{product.name}</div>
         <div className="item-price">
           {getPriceByCurrency(product.prices, currency)}
@@ -61,7 +64,7 @@ class CategoryPageItem extends React.Component {
         <div
           id="category-item-overlay"
           onClick={() => {
-            this.props.handleChangeProduct(product);
+            handleChangeProduct(product);
           }}
         ></div>
       </div>
@@ -71,11 +74,12 @@ class CategoryPageItem extends React.Component {
 
 class AddToCartIcon extends React.Component {
   render() {
+    const { itemId, handleAddToCart } = this.props;
     return (
       <Query
         query={PRODUCT_BY_ID}
         variables={{
-          productId: this.props.itemId,
+          productId: itemId,
         }}
       >
         {({ loading, data }) => {
@@ -88,10 +92,10 @@ class AddToCartIcon extends React.Component {
               src={addToCart}
               alt=""
               onClick={() => {
-                const product = data.product;
-                const attributes = addDefaultAttributes(product);
-                const newItem = createCartItem(product, attributes);
-                this.props.handleAddToCart(newItem);
+                // Create a cart item, by adding default attributes
+                const attributes = addDefaultAttributes(data.product);
+                const newItem = createCartItem(data.product, attributes);
+                handleAddToCart(newItem);
               }}
             />
           );

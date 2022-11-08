@@ -5,31 +5,43 @@ import Cart from "./body_components/cart";
 
 class Body extends React.Component {
   render() {
-    switch (this.props.bodyPage) {
+    const {
+      category,
+      currency,
+      product,
+      bodyPage,
+      cart,
+      handleAddToCart,
+      handleChangeProduct,
+      handleClearCart,
+      handleChangeCart,
+    } = this.props;
+
+    switch (bodyPage) {
       case "category":
         return (
           <CategoryItems
-            category={this.props.category}
-            currency={this.props.currency}
-            handleAddToCart={this.props.handleAddToCart}
-            handleChangeProduct={this.props.handleChangeProduct}
+            category={category}
+            currency={currency}
+            handleAddToCart={handleAddToCart}
+            handleChangeProduct={handleChangeProduct}
           />
         );
       case "pdp":
         return (
           <ProductPage
-            productId={this.props.product.id}
-            currency={this.props.currency}
-            handleAddToCart={this.props.handleAddToCart}
+            productId={product.id}
+            currency={currency}
+            handleAddToCart={handleAddToCart}
           />
         );
       case "cart":
         return (
           <Cart
-            currency={this.props.currency}
-            cart={this.props.cart}
-            handleChangeCart={this.props.handleChangeCart}
-            handleClearCart={this.props.handleClearCart}
+            currency={currency}
+            cart={cart}
+            handleChangeCart={handleChangeCart}
+            handleClearCart={handleClearCart}
           />
         );
     }

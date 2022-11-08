@@ -4,14 +4,15 @@ import uuid from "react-uuid";
 
 class CartItems extends React.Component {
   render() {
+    const { cart, currency, handleChangeCart } = this.props;
     return (
       <div>
-        {this.props.cart.map((cartItem) => (
+        {cart.map((cartItem) => (
           <CartItem
             item={cartItem}
             key={uuid()}
-            currency={this.props.currency}
-            handleChangeCart={this.props.handleChangeCart}
+            currency={currency}
+            handleChangeCart={handleChangeCart}
           />
         ))}
       </div>

@@ -5,36 +5,41 @@ import ProductAttributes from "./ProductAttributes";
 
 class ProductInfo extends React.Component {
   render() {
+    const {
+      product,
+      currency,
+      selectedAttributes,
+      handleAddToCart,
+      handleChangeAttributes,
+    } = this.props;
+
     return (
       <div className="product-info">
         <div className="p-item-name">
-          <span>{this.props.product.brand}</span>
-          <span>{this.props.product.name}</span>
+          <span>{product.brand}</span>
+          <span>{product.name}</span>
         </div>
         {/*Attributes here*/}
-        {this.props.product.attributes.map((attribute) => {
+        {product.attributes.map((attribute) => {
           return (
             <ProductAttributes
-              attribute={attribute}
               key={uuid()}
-              selectedAttributes={this.props.selectedAttributes}
-              handleChangeAttributes={this.props.handleChangeAttributes}
+              attribute={attribute}
+              selectedAttributes={selectedAttributes}
+              handleChangeAttributes={handleChangeAttributes}
             />
           );
         })}
         <div className="p-item-price">
           <span>Price:</span>
-          {getPriceByCurrency(
-            this.props.product.prices,
-            this.props.currency,
-            this.props.product.amount
-          )}
+          {getPriceByCurrency(product.prices, currency, product.amount)}
         </div>
         <AddToCartButton
-          selectedAttributes={this.props.selectedAttributes}
-          product={this.props.product}
-          handleAddToCart={this.props.handleAddToCart}
+          selectedAttributes={selectedAttributes}
+          product={product}
+          handleAddToCart={handleAddToCart}
         />
+        <ProductDescription description={product.description} />
       </div>
     );
   }
@@ -42,17 +47,31 @@ class ProductInfo extends React.Component {
 
 class AddToCartButton extends React.Component {
   render() {
+    const { product, selectedAttributes, handleAddToCart } = this.props;
     return (
       <div
-        className="add-to-cart-button"
+        className="add-to-cart-button button green"
         onClick={() => {
-          this.props.handleAddToCart(
-            createCartItem(this.props.product, this.props.selectedAttributes)
-          );
+          handleAddToCart(createCartItem(product, selectedAttributes));
         }}
       >
         add to cart
       </div>
+    );
+  }
+}
+
+class ProductDescription extends React.Component {
+  render() {
+    const { description } = this.props;
+
+    return description.includes("<") ? (
+      <div
+        dangerouslySetInnerHTML={{ __html: description }}
+        className="product-description"
+      />
+    ) : (
+      <p className="product-description">{description}</p>
     );
   }
 }

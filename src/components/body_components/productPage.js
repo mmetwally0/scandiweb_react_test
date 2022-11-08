@@ -7,11 +7,12 @@ import { addDefaultAttributes, isSelectedAttribute } from "../../functions";
 
 class ProductPage extends React.Component {
   render() {
+    const { productId, currency, handleAddToCart } = this.props;
     return (
       <Query
         query={PRODUCT_BY_ID}
         variables={{
-          productId: this.props.productId,
+          productId: productId,
         }}
       >
         {({ loading, data }) => {
@@ -21,8 +22,8 @@ class ProductPage extends React.Component {
           return (
             <Product
               product={data.product}
-              currency={this.props.currency}
-              handleAddToCart={this.props.handleAddToCart}
+              currency={currency}
+              handleAddToCart={handleAddToCart}
             />
           );
         }}
@@ -42,6 +43,7 @@ class Product extends React.Component {
     this.handleChangeAttributes = this.handleChangeAttributes.bind(this);
   }
 
+  // If the attribute is not selected, change it to be the selected attribute
   handleChangeAttributes(attributeValue, attribute) {
     if (
       !isSelectedAttribute(
@@ -50,14 +52,14 @@ class Product extends React.Component {
         this.state.selectedAttributes
       )
     ) {
-      const placeHolder = { ...this.state.selectedAttributes };
-      placeHolder[attribute.id] = JSON.stringify(attributeValue);
-      this.setState({ selectedAttributes: placeHolder });
+      const attributesCopy = { ...this.state.selectedAttributes };
+      attributesCopy[attribute.id] = JSON.stringify(attributeValue); // Replace the attribute
+      this.setState({ selectedAttributes: attributesCopy });
     }
   }
 
   render() {
-    const { product, currency } = this.props;
+    const { product, currency, handleAddToCart } = this.props;
 
     return (
       <div className="product body">
@@ -67,7 +69,7 @@ class Product extends React.Component {
           currency={currency}
           selectedAttributes={this.state.selectedAttributes}
           handleChangeAttributes={this.handleChangeAttributes}
-          handleAddToCart={this.props.handleAddToCart}
+          handleAddToCart={handleAddToCart}
         />
       </div>
     );
