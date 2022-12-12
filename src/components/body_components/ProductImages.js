@@ -1,7 +1,7 @@
 import React from "react";
 import uuid from "react-uuid";
 
-class ProductImages extends React.Component {
+class ProductImages extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -14,21 +14,17 @@ class ProductImages extends React.Component {
   }
 
   componentDidMount() {
+    const images = [...this.props.images];
+
     if (this.props.images.length > 1) {
-      let images = [...this.props.images];
-      const lastImage = images.pop(); // The last image in the list is set as the main image, and the remaining images are set as mini-images
-      this.setState({ currentImage: lastImage, miniImages: images });
+      this.setState({ currentImage: images[0], miniImages: images });
     } else {
-      this.setState({ currentImage: this.props.images[0] });
+      this.setState({ currentImage: images[0] });
     }
   }
 
   handleSwapImages(image) {
-    let miniImagesCopy = [...this.state.miniImages];
-    const changingImage = miniImagesCopy.indexOf(image);
-    miniImagesCopy[changingImage] = this.state.currentImage; // Replace the image in the list by the main image
-
-    this.setState({ currentImage: image, miniImages: miniImagesCopy }); // Set main image as the image clicked
+    this.setState({ currentImage: image });
   }
 
   render() {
@@ -51,7 +47,7 @@ class ProductImages extends React.Component {
   }
 }
 
-class MiniImage extends React.Component {
+class MiniImage extends React.PureComponent {
   render() {
     const { image, handleSwapImages } = this.props;
     return (

@@ -5,7 +5,7 @@ import { getPriceByCurrency } from "../../functions";
 import Attributes from "./attributes";
 import uuid from "react-uuid";
 
-class MiniCartItem extends React.Component {
+class MiniCartItem extends React.PureComponent {
   render() {
     const { item, currency, handleChangeCart } = this.props;
     return (
@@ -20,7 +20,7 @@ class MiniCartItem extends React.Component {
   }
 }
 
-class MiniCartItemInfo extends React.Component {
+class MiniCartItemInfo extends React.PureComponent {
   render() {
     const { item, currency } = this.props;
     return (
@@ -48,7 +48,7 @@ class MiniCartItemInfo extends React.Component {
   }
 }
 
-class MiniCartItemControls extends React.Component {
+class MiniCartItemControls extends React.PureComponent {
   render() {
     const { item, handleChangeCart } = this.props;
     return (

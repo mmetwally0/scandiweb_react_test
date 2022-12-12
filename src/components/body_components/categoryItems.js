@@ -8,13 +8,13 @@ import {
   addDefaultAttributes,
 } from "../../functions";
 
-class CategoryItems extends React.Component {
+class CategoryItems extends React.PureComponent {
   render() {
     const { category, currency, handleAddToCart, handleChangeProduct } =
       this.props;
 
     return (
-      <div className="category-page body" ref={this.ref}>
+      <div className="category-page" id="body" ref={this.ref}>
         <h1>{category}</h1>
         <div className="category-items-container">
           <Query
@@ -43,16 +43,12 @@ class CategoryItems extends React.Component {
   }
 }
 
-class CategoryPageItem extends React.Component {
+class CategoryPageItem extends React.PureComponent {
   render() {
     const { product, currency, handleAddToCart, handleChangeProduct } =
       this.props;
     return (
-      <div
-        className={
-          "item-in-category" + " " + (!product.inStock && "out-of-stock")
-        }
-      >
+      <div className={`item-in-category ${!product.inStock && "out-of-stock"}`}>
         <div className="item-image">
           <img src={product.gallery[0]} alt="" />
         </div>
@@ -72,7 +68,7 @@ class CategoryPageItem extends React.Component {
   }
 }
 
-class AddToCartIcon extends React.Component {
+class AddToCartIcon extends React.PureComponent {
   render() {
     const { itemId, handleAddToCart } = this.props;
     return (

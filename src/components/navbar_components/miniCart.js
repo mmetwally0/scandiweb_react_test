@@ -19,8 +19,8 @@ class MiniCart extends ClickOutsideToClose {
   // If clicked outside the mini cart, close it
   onClickOutside() {
     this.setState({ show: false });
-    document.querySelector("#overlay").style.display = "none";
-    document.querySelector(".body").style.pointerEvents = "auto";
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("body").style.pointerEvents = "auto";
   }
 
   handleCartOpen() {
@@ -31,12 +31,12 @@ class MiniCart extends ClickOutsideToClose {
   handleBlackScreen() {
     switch (this.state.show) {
       case false:
-        document.querySelector("#overlay").style.display = "block";
-        document.querySelector(".body").style.pointerEvents = "none";
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("body").style.pointerEvents = "none";
         break;
       default:
-        document.querySelector("#overlay").style.display = "none";
-        document.querySelector(".body").style.pointerEvents = "auto";
+        document.getElementById("overlay").style.display = "none";
+        document.getElementById("body").style.pointerEvents = "auto";
         break;
     }
   }
@@ -71,7 +71,7 @@ class MiniCart extends ClickOutsideToClose {
   }
 }
 
-class MiniCartMenu extends React.Component {
+class MiniCartMenu extends React.PureComponent {
   render() {
     const {
       cart,
@@ -127,12 +127,13 @@ class MiniCartMenu extends React.Component {
   }
 }
 
-class MiniCartControls extends React.Component {
+class MiniCartControls extends React.PureComponent {
   render() {
     const { show, cart, handleCartOpen } = this.props;
     return (
       <div
-        className={"minicart-controls" + " " + (show && "active")}
+        // className={"minicart-controls" + " " + (show && "active")}
+        className={`minicart-controls ${show && "active"}`}
         onClick={handleCartOpen}
       >
         <img src={cartIcon} alt="" />
@@ -144,7 +145,7 @@ class MiniCartControls extends React.Component {
   }
 }
 
-class MiniCartHeading extends React.Component {
+class MiniCartHeading extends React.PureComponent {
   render() {
     const count = getCartTotalItems(this.props.cart);
     return (
@@ -156,7 +157,7 @@ class MiniCartHeading extends React.Component {
   }
 }
 
-class MiniCartFooter extends React.Component {
+class MiniCartFooter extends React.PureComponent {
   render() {
     const { cart, currency } = this.props;
     return (

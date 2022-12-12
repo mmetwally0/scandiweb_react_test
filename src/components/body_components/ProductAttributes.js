@@ -2,7 +2,7 @@ import React from "react";
 import uuid from "react-uuid";
 import { getClassName } from "../../functions";
 
-class ProductAttributes extends React.Component {
+class ProductAttributes extends React.PureComponent {
   renderSwitch(param, attributeValues, attribute) {
     switch (param) {
       case "text":
@@ -45,7 +45,7 @@ class ProductAttributes extends React.Component {
   }
 }
 
-class TextAttribute extends React.Component {
+class TextAttribute extends React.PureComponent {
   render() {
     const { data, attribute, selectedAttributes, handleChangeAttributes } =
       this.props;
@@ -63,7 +63,7 @@ class TextAttribute extends React.Component {
   }
 }
 
-class SwatchAttribute extends React.Component {
+class SwatchAttribute extends React.PureComponent {
   render() {
     const { data, attribute, selectedAttributes, handleChangeAttributes } =
       this.props;

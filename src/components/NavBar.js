@@ -6,10 +6,6 @@ import CurrencySwitcher from "./navbar_components/currencySwitcher";
 import logo from "../images/logo.svg";
 
 class NavBar extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const {
       category,

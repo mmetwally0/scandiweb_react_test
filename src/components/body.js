@@ -3,7 +3,7 @@ import CategoryItems from "./body_components/categoryItems";
 import ProductPage from "./body_components/productPage";
 import Cart from "./body_components/cart";
 
-class Body extends React.Component {
+class Body extends React.PureComponent {
   render() {
     const {
       category,
@@ -44,6 +44,8 @@ class Body extends React.Component {
             handleClearCart={handleClearCart}
           />
         );
+      default:
+        return null;
     }
   }
 }

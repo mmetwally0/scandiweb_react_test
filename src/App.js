@@ -3,7 +3,6 @@ import NavBar from "./components/NavBar";
 import Body from "./components/body";
 import React from "react";
 import { isLastItem, itemInCart, isItemIdentical } from "./functions";
-import cart from "./components/body_components/cart";
 import Alert from "./components/Alert";
 
 class App extends React.Component {
@@ -24,7 +23,6 @@ class App extends React.Component {
 
     this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
-    this.handleSavePreference = this.handleSavePreference.bind(this);
     this.handleChangeProduct = this.handleChangeProduct.bind(this);
     this.handleChangeCart = this.handleChangeCart.bind(this);
     this.handleClearCart = this.handleClearCart.bind(this);
@@ -33,23 +31,21 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    if (this.state.storeState) {
-      // Retrieve the state saved in the browser
-      const savedState = localStorage.getItem("APP_STATE"); // String
-      const savedStateObject = JSON.parse(savedState); // Object
-      const stringifiedState = JSON.stringify(this.state); // String
+    // Retrieve the state saved in the browser
+    const savedState = localStorage.getItem("APP_STATE"); // String
+    const savedStateObject = JSON.parse(savedState); // Object
+    const stringifiedState = JSON.stringify(this.state); // String
 
-      // If there is state saved, set the current state to it.
-      savedState
-        ? savedState !== stringifiedState && this.setState(savedStateObject) // If the saved state doesn't match the current state replace the current state
-        : localStorage.setItem("APP_STATE", stringifiedState); // If there is no saved state, save the current state
-    }
+    // If there is state saved, set the current state to it.
+    savedState
+      ? savedState !== stringifiedState && this.setState(savedStateObject) // If the saved state doesn't match the current state replace the current state
+      : localStorage.setItem("APP_STATE", stringifiedState); // If there is no saved state, save the current state
 
-    this.setState({ showAlert: false });
+    this.setState({ showAlert: false }); // On reload, remove any alert notification
   }
 
   // On component Update, Re-save the state locally
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate() {
     this.state.storeState
       ? localStorage.setItem("APP_STATE", JSON.stringify(this.state))
       : localStorage.removeItem("APP_STATE");
@@ -65,14 +61,6 @@ class App extends React.Component {
     this.setState({ category: name, bodyPage: "category" });
   }
 
-  // Alters the save state
-  handleSavePreference() {
-    this.handleAlert(
-      this.state.storeState ? "All Clean! 🗑️" : "Saving History ✅"
-    );
-    this.setState({ storeState: !this.state.storeState });
-  }
-
   // Handles adding items to cart
   handleAddToCart(item) {
     !itemInCart(this.state.cart, item) // if item is not in the cart
@@ -82,7 +70,7 @@ class App extends React.Component {
 
   // Handles removing from cart
   handleRemoveFromCart(item) {
-    let cartCopy = this.state.cart.filter(
+    const cartCopy = this.state.cart.filter(
       (cartItem) => !isItemIdentical(item, cartItem)
     ); // Creates a new cart by removing the item
     this.setState({ cart: cartCopy });
@@ -91,7 +79,7 @@ class App extends React.Component {
   // Handles changing the amount of item in cart
   handleChangeItemAmount(item, add) {
     // Loop through the cart items, if the specified item is found perform the operation
-    let cartCopy = this.state.cart.map((cartItem) =>
+    const cartCopy = this.state.cart.map((cartItem) =>
       !isItemIdentical(item, cartItem)
         ? cartItem
         : {

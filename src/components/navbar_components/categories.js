@@ -3,7 +3,7 @@ import React from "react";
 import { ALL_CATEGORIES } from "../queries";
 import { Query } from "@apollo/client/react/components";
 
-class Categories extends React.Component {
+class Categories extends React.PureComponent {
   render() {
     const { handleCategoryChange } = this.props;
 

@@ -6,7 +6,7 @@ import Attributes from "./attributes";
 import uuid from "react-uuid";
 import CartImage from "./CartImage";
 
-class CartItem extends React.Component {
+class CartItem extends React.PureComponent {
   render() {
     const { item, currency, handleChangeCart } = this.props;
 
@@ -25,7 +25,7 @@ class CartItem extends React.Component {
   }
 }
 
-class CartItemInfo extends React.Component {
+class CartItemInfo extends React.PureComponent {
   render() {
     const { item, currency } = this.props;
     return (
@@ -53,7 +53,7 @@ class CartItemInfo extends React.Component {
   }
 }
 
-class CartItemControls extends React.Component {
+class CartItemControls extends React.PureComponent {
   render() {
     const { item, handleChangeCart } = this.props;
     return (

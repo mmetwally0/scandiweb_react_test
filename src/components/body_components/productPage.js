@@ -5,7 +5,7 @@ import { PRODUCT_BY_ID } from "../queries";
 import { Query } from "@apollo/client/react/components";
 import { addDefaultAttributes, isSelectedAttribute } from "../../functions";
 
-class ProductPage extends React.Component {
+class ProductPage extends React.PureComponent {
   render() {
     const { productId, currency, handleAddToCart } = this.props;
     return (
@@ -62,7 +62,7 @@ class Product extends React.Component {
     const { product, currency, handleAddToCart } = this.props;
 
     return (
-      <div className="product body">
+      <div className="product" id="body">
         <ProductImages images={product.gallery} />
         <ProductInfo
           product={product}

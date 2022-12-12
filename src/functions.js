@@ -19,7 +19,7 @@ export const getPriceByCurrency = (
 
 //Creates an object in the cart, storing Item info, amount, and the selected attributes
 export const createCartItem = (originalItem, selectedAttributes) => {
-  let item = { ...originalItem };
+  const item = { ...originalItem };
   item["amount"] = 1;
   item["selectedAttributes"] = selectedAttributes;
   return item;
@@ -27,7 +27,7 @@ export const createCartItem = (originalItem, selectedAttributes) => {
 
 // Adds the first option of each attribute to the item by default
 export const addDefaultAttributes = (originalItem) => {
-  let attributes = {};
+  const attributes = {};
   originalItem.attributes.forEach((attribute) => {
     attributes[attribute.id] = JSON.stringify(attribute.items[0]);
   });
@@ -55,9 +55,9 @@ export const getClassName = (
     attribute,
     defaultAttributes
   )
-    ? " " + "selected"
+    ? "selected"
     : "";
-  return `${type}-attribute` + selected;
+  return `${type}-attribute ${selected}`;
 };
 
 // Loops through all items in the cart and gets their total amount
@@ -70,19 +70,26 @@ export const getCartTotalItems = (cart) => {
 // Loops through all items in the cart and gets their total cost.
 // Returns formatted string with the currency symbol
 export const getCartTotalCost = (cart, currency) => {
-  let cost = 0;
-  cart.forEach((item) => {
-    cost += getPriceByCurrency(item.prices, currency, item.amount, "number");
-  });
+  const cost = cart.reduce(
+    (total, currentItem) =>
+      total +
+      getPriceByCurrency(
+        currentItem.prices,
+        currency,
+        currentItem.amount,
+        "number"
+      ),
+    0
+  );
+
   return currency + cost.toFixed(2);
 };
 
 // Checks if an item is in the cart
 export const itemInCart = (cart, item) => {
-  let cartCopy = [];
+  const cartCopy = [];
   cart.forEach((item) => {
-    let newItem = { ...item, amount: 0 }; // Here I remove the amount from the Item object, so that I only compare the item and it's selected attributes
-    newItem = JSON.stringify(newItem);
+    const newItem = JSON.stringify({ ...item, amount: 0 }); // Here I remove the amount from the Item object, so that I only compare the item and it's selected attributes
     cartCopy.push(newItem);
   });
 
@@ -96,10 +103,9 @@ export const isLastItem = (cart, item) => {
 };
 
 export const isItemIdentical = (item1, item2) => {
-  const firstComparison = item1.id === item2.id;
-  const secondComparison =
+  const comparison =
     JSON.stringify(item1.selectedAttributes) ===
     JSON.stringify(item2.selectedAttributes);
 
-  return firstComparison && secondComparison;
+  return item1.id === item2.id && comparison;
 };

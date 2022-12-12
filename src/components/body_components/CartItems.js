@@ -2,7 +2,7 @@ import React from "react";
 import CartItem from "./CartItem";
 import uuid from "react-uuid";
 
-class CartItems extends React.Component {
+class CartItems extends React.PureComponent {
   render() {
     const { cart, currency, handleChangeCart } = this.props;
     return (

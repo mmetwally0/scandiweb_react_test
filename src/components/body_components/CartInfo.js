@@ -1,7 +1,7 @@
 import React from "react";
 import { getCartTotalCost, getCartTotalItems } from "../../functions";
 
-class CartInfo extends React.Component {
+class CartInfo extends React.PureComponent {
   render() {
     const { cart, currency, handleClearCart } = this.props;
 
@@ -30,7 +30,7 @@ class CartInfo extends React.Component {
 
 export default CartInfo;
 
-class Info extends React.Component {
+class Info extends React.PureComponent {
   render() {
     const { name, value } = this.props;
 

@@ -2,8 +2,9 @@ import React from "react";
 import { createCartItem, getPriceByCurrency } from "../../functions";
 import uuid from "react-uuid";
 import ProductAttributes from "./ProductAttributes";
+import parse from "html-react-parser";
 
-class ProductInfo extends React.Component {
+class ProductInfo extends React.PureComponent {
   render() {
     const {
       product,
@@ -14,7 +15,7 @@ class ProductInfo extends React.Component {
     } = this.props;
 
     return (
-      <div className="product-info">
+      <div className={`product-info ${!product.inStock && "out-of-stock"}`}>
         <div className="p-item-name">
           <span>{product.brand}</span>
           <span>{product.name}</span>
@@ -45,7 +46,7 @@ class ProductInfo extends React.Component {
   }
 }
 
-class AddToCartButton extends React.Component {
+class AddToCartButton extends React.PureComponent {
   render() {
     const { product, selectedAttributes, handleAddToCart } = this.props;
     return (
@@ -61,15 +62,12 @@ class AddToCartButton extends React.Component {
   }
 }
 
-class ProductDescription extends React.Component {
+class ProductDescription extends React.PureComponent {
   render() {
     const { description } = this.props;
 
     return description.includes("<") ? (
-      <div
-        dangerouslySetInnerHTML={{ __html: description }}
-        className="product-description"
-      />
+      <div className="product-description">{parse(description)}</div>
     ) : (
       <p className="product-description">{description}</p>
     );

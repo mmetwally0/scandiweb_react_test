@@ -74,7 +74,7 @@ class CurrencySwitcher extends ClickOutsideToClose {
   }
 }
 
-class CurrencyMenuControls extends React.Component {
+class CurrencyMenuControls extends React.PureComponent {
   render() {
     const { currency, show, handleCartControls } = this.props;
     return (
